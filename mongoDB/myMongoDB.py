@@ -10,14 +10,33 @@ import sys
 class MyMongoDB:
 
     def __init__(self):
-        self.client = MongoClient('localhost', 27017)
+        #self.client = MongoClient('localhost', 27017)
+        #self.db = self.client['market']
+        #self.document = self.db['stocks']
+
+       # print(self.client.list_database_names())
+        return None
 
     def connectTo(self, dbName, docName):
-        self.db = self.client[dbName]
-        self.document = self.db[docName]
+        try:
 
-        if dbName in self.client.list_database_names():
-            print("The database exists.")
+            self.db = self.client[dbName]
+            self.document = self.db[docName]
+
+        except:
+            return "Fail"
+
+        return "Connected"
+
+    def getDocs(self):
+        dbs = self.client.list_database_names()
+        string = "DB - Doc\n"
+        for db in dbs:
+            collection = db[db]
+            cursor = collection.find({})
+            for doc in cursor:
+                string += db + " - " + doc + "\n"
+        return string
 
     @route('/50day', method='POST')
     def day50(self):
@@ -94,6 +113,6 @@ class MyMongoDB:
 
 # for database testing
 if __name__ == '__main__':
-    run(host='localhost', port=8080)
+    print(MyMongoDB().getDocs())
 
 

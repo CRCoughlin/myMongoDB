@@ -8,4 +8,4 @@ __email__ = "coughlin.exe@gmail.com"
 __status__ = "Development"
 
 
-connection.Connection()
+connection.Connection('localhost', 8080).run()
